@@ -5,7 +5,7 @@ var marginLeft = 0;
 var marginTop = 0;
 
 var pieX = width/2;
-    pieY = height/2;
+pieY = height/2;
 
 
 var svg = d3.select('svg')
@@ -17,8 +17,8 @@ var pieGroup = svg.append('g')
 
 
 //set up scales to position circles using the data
-var scaleColor = d3.scaleOrdinal().domain(["16-19", "20-24", "25-34", "35-44", "45-54", "55-64","65+"])
-    .range(["red","orange","yellow","lime","blue","purple","magenta"]);
+var scaleColor = d3.scaleOrdinal().domain(["Biomass", "Geothermal", "Solar", "Hydro", "Wind"])
+    .range(["lightsalmon","salmon","darksalmon","lightcoral","indianred"]);
 
 
 var nestedData = [];
@@ -49,7 +49,7 @@ var labelArc = d3.arc()
 
 
 //import the data from the .csv file
-d3.csv('./incomeData.csv', function(dataIn){
+d3.csv('./Clean Energy.csv', function(dataIn){
 
     nestedData = d3.nest()
         .key(function(d){return d.year})
@@ -65,7 +65,8 @@ d3.csv('./incomeData.csv', function(dataIn){
 
     g.append('path')              //grab each group in the variable above, and add a path to it (this will be the pie wedge)
         .attr('d',makeArc)        //call the makeArc generator function to draw the actual wedges
-        .attr('fill', function(d){ return scaleColor(d.data.age)});
+        .attr('fill', function(d){ return scaleColor(d.data.type)})
+        .attr('opacity',.75);
 
     g.append('text')
         .attr("transform", function(d) {
@@ -73,12 +74,13 @@ d3.csv('./incomeData.csv', function(dataIn){
         .attr('dy', '.35em')
         .attr('text-anchor','middle')
         .text(function(d){
-            return d.data.age
+            return d.data.type
         });
 
 
 
 })
+
 
 /*
     // Add the path
